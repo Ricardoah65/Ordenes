@@ -1,12 +1,10 @@
 package com.sistema.ordenes.service;
 
-import com.sistema.ordenes.model.Order;
+import com.sistema.ordenes.dto.orderRequestDto;
+import com.sistema.ordenes.dto.orderResponseDto;
 
-import java.util.List;
 
 public interface IOrderService {
-    public Order createOrder(Long idUser,
-                             List<Long> idProducts,
-                             String notes);
+    public orderResponseDto createOrder(orderRequestDto dto);
 
 }

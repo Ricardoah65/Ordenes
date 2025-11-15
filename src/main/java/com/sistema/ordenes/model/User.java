@@ -30,18 +30,28 @@ public class User {
     @NotBlank(message = "No puede estar vacio")
     private String telephone;
 
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "No puede estar vacio")
+    private String password;
+
+    @Column(name = "address", nullable = false)
+    @NotBlank(message = "No puede estar vacio")
+    private String address;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Order> orders = new ArrayList<>();
 
     public User() {
     }
 
-    public User(Long idUser, String name, String lastname, String email, String telephone, List<Order> orders) {
+    public User(Long idUser, String name, String lastname, String email, String telephone, String password, String address, List<Order> orders) {
         this.idUser = idUser;
         this.name = name;
         this.lastname = lastname;
         this.email = email;
         this.telephone = telephone;
+        this.password = password;
+        this.address = address;
         this.orders = orders;
     }
 
@@ -91,6 +101,22 @@ public class User {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    public @NotBlank(message = "No puede estar vacio") String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank(message = "No puede estar vacio") String password) {
+        this.password = password;
+    }
+
+    public @NotBlank(message = "No puede estar vacio") String getAddress() {
+        return address;
+    }
+
+    public void setAddress(@NotBlank(message = "No puede estar vacio") String address) {
+        this.address = address;
     }
 
     @Override

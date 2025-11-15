@@ -28,17 +28,22 @@ public class Product {
     @Positive(message = "Debe ser un número positivo")
     private Double price;
 
+    @Column(name="stock", nullable = false)
+    @NotBlank(message = "Dime cuantas hay disponibles")
+    private int stock;
+
     @ManyToMany(mappedBy = "products")
     private List<Order> orders = new ArrayList<>();
 
     public Product() {
     }
 
-    public Product(Long id, String name, String description, Double price, List<Order> orders) {
+    public Product(Long id, String name, String description, Double price, int stock, List<Order> orders) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.price = price;
+        this.stock = stock;
         this.orders = orders;
     }
 
@@ -80,6 +85,15 @@ public class Product {
 
     public void setOrders(List<Order> orders) {
         this.orders = orders;
+    }
+
+    @NotBlank(message = "Dime cuantas hay disponibles")
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(@NotBlank(message = "Dime cuantas hay disponibles") int stock) {
+        this.stock = stock;
     }
 }
 

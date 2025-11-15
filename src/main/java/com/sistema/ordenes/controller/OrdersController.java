@@ -1,5 +1,7 @@
 package com.sistema.ordenes.controller;
 
+import com.sistema.ordenes.dto.orderRequestDto;
+import com.sistema.ordenes.dto.orderResponseDto;
 import com.sistema.ordenes.model.Order;
 import com.sistema.ordenes.service.OrderService;
 import jakarta.validation.constraints.FutureOrPresent;
@@ -20,11 +22,9 @@ public class OrdersController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Order> create(@RequestParam Long userId,
-                                       @RequestParam List<Long> productIds,
-                                       @RequestParam String note){
-        Order order = orderService.createOrder(userId, productIds, note);
-        return ResponseEntity.ok(order);
+    public ResponseEntity<orderResponseDto> create(@RequestBody orderRequestDto orderRequestDto){
+        orderResponseDto response = orderService.createOrder(orderRequestDto);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/getAll")

@@ -63,6 +63,7 @@ public class ProductService implements IProductService{
         prod.setName(product.getName());
         prod.setDescription(product.getDescription());
         prod.setPrice(product.getPrice());
+        prod.setStock(product.getStock());
 
         return productRepo.save(prod);
     }
@@ -71,6 +72,12 @@ public class ProductService implements IProductService{
     public Product updatePrice(Long id, Double newPrice) {
         Product prod = productRepo.findById(id).orElseThrow(()-> new RuntimeException("No hay producto por ese id"));
         prod.setPrice(newPrice);
+        return productRepo.save(prod);
+    }
+
+    public Product updateStock(Long id, int stock) {
+        Product prod = productRepo.findById(id).orElseThrow(()-> new RuntimeException("No hay producto por ese id"));
+        prod.setStock(stock);
         return productRepo.save(prod);
     }
 

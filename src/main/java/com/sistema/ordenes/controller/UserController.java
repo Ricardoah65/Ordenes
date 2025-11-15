@@ -1,11 +1,15 @@
 package com.sistema.ordenes.controller;
 
+import com.sistema.ordenes.dto.userRequestDto;
+import com.sistema.ordenes.dto.userResponseDto;
+import com.sistema.ordenes.mapper.userMapper;
 import com.sistema.ordenes.model.User;
 import com.sistema.ordenes.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,28 +23,28 @@ public class UserController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<Void> saveUser(@RequestBody User user){
-        if (user.getIdUser() == null || !this.userService.exist(user.getIdUser())){
-            this.userService.saveUser(user);
-            return ResponseEntity.ok().build();
-        }else{
-            return ResponseEntity.badRequest().build();
-        }
+    public ResponseEntity<userResponseDto> saveUser(@RequestBody userRequestDto userRequest){
+        User user = userMapper.toEntity(userRequest);
+        userService.saveUser(user);
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<User> getById(@PathVariable Long id){
-        return ResponseEntity.ok(this.userService.findById(id));
+    public ResponseEntity<userResponseDto> getById(@PathVariable Long id){
+        User user = this.userService.findById(id);
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @GetMapping("/getAll")
     public ResponseEntity<List<User>> getAll(){
+        //Este no lo paso por el dto porque lo manejaré con role desde security
         return ResponseEntity.ok(this.userService.findAll());
     }
 
     @GetMapping("/getByEmail/{email}")
-    public ResponseEntity<User> getByEmail(@PathVariable String email){
-        return ResponseEntity.ok(this.userService.findByEmail(email));
+    public ResponseEntity<userResponseDto> getByEmail(@PathVariable String email){
+        User user = this.userService.findByEmail(email);
+        return ResponseEntity.ok(userMapper.toResponse(user));
     }
 
     @DeleteMapping("/deleteById/{id}")

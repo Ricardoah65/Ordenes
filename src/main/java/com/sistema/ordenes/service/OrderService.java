@@ -1,5 +1,7 @@
 package com.sistema.ordenes.service;
 
+import com.sistema.ordenes.dto.orderRequestDto;
+import com.sistema.ordenes.dto.orderResponseDto;
 import com.sistema.ordenes.model.Order;
 import com.sistema.ordenes.model.Product;
 import com.sistema.ordenes.model.User;
@@ -25,22 +27,31 @@ public class OrderService implements IOrderService {
     }
 
     //CREAR UNA ORDEN
-    public Order createOrder(Long idUser,
-                             List<Long> idProducts,
-                             String notes){
-        User user = userRepo.findById(idUser)
-                .orElseThrow(()-> new RuntimeException("No se encontró usuaripo por el Id" + idUser));
+    public orderResponseDto createOrder(orderRequestDto orderRequest){
+        User user = userRepo.findById(orderRequest.getUserId())
+                .orElseThrow(()-> new RuntimeException("No se encontró usuario por el Id" + orderRequest.getUserId()));
 
-        List<Product> product = productRepo.findAllById(idProducts);
+        List<Product> product = productRepo.findAllById(orderRequest.getProductsId());
 
         Order order = new Order();
         order.setUser(user);
         order.setProducts(product);
-        order.setAdditionalNotes(notes);
+        order.setAdditionalNotes(orderRequest.getAdditionalNotes());
         order.setDate(LocalDateTime.now());
 
         orderRepo.save(order);
-        return order;
+
+        //convertimos a dto la respuesta
+        List<String> productNames = product.stream().map(Product::getName).toList();
+
+
+        return new orderResponseDto(
+            order.getIdOrder(),
+            order.getDate(),
+            order.getAdditionalNotes(),
+            user.getName(),
+            productNames
+        );
     }
 
     public List<Order> getAllOrders(){

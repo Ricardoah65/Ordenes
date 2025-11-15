@@ -20,6 +20,11 @@ public class UserService implements IUserService {
     @Override
     public void saveUser(User user) {
         userRepo.save(user);
+
+        /*if (user.getIdUser() == null || !this.userService.exist(user.getIdUser())){
+            this.userService.saveUser(user);
+            return ResponseEntity.ok().build();
+        }*/
     }
 
     @Override
